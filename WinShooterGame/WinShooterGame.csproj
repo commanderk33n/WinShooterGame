@@ -97,7 +97,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include=".xaml.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -119,7 +118,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="Content\Graphics\bgLayer1.png" />
+    <Content Include="Content\Graphics\bgLayer2.png" />
+    <Content Include="Content\Graphics\boss.png" />
+    <Content Include="Content\Graphics\endMenu.png" />
+    <Content Include="Content\Graphics\explosion.png" />
+    <Content Include="Content\Graphics\healthBar.png" />
+    <Content Include="Content\Graphics\laser.png" />
+    <Content Include="Content\Graphics\mainbackground.png" />
+    <Content Include="Content\Graphics\mainMenu.png" />
+    <Content Include="Content\Graphics\mine.png" />
+    <Content Include="Content\Graphics\mineAnimation.png" />
     <Content Include="Content\Graphics\player.png" />
+    <Content Include="Content\Graphics\shipAnimation.png" />
+    <Content Include="Content\Sound\explosion.wav" />
+    <Content Include="Content\Sound\gameMusic.mp3" />
+    <Content Include="Content\Sound\laserFire.wav" />
+    <Content Include="Content\Sound\menuMusic.mp3" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
