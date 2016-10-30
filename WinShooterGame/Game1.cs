@@ -1,12 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WinShooterGame.GameObjects;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace WinShooterGame
 {
@@ -18,8 +11,8 @@ namespace WinShooterGame
         private const int DEFAULT_SCREEN_WIDTH = 800;
         private const int DEFAULT_SCREEN_HEIGTH = 480;
 
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         public Game1()
         {
@@ -83,7 +76,6 @@ namespace WinShooterGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
             /* have the actrive screen update */
             SCREEN_MANAGER.Update(gameTime);
 
@@ -103,7 +95,5 @@ namespace WinShooterGame
 
             base.Draw(gameTime);
         }
-
-
     }
 }

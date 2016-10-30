@@ -1,85 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Media;
-using WinShooterGame.GameObjects;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Media;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using WinShooterGame.GameObjects;
 
 namespace WinShooterGame
 {
-    class GameScreen : Screen
+    internal class GameScreen : Screen
     {
         // A movement speed for the player.
         private const float PlayerMoveSpeed = 8;
 
-        Player _player;
+        private Player _player;
 
-        Texture2D _mainBackground;
-        ParallaxingBackground _bgLayer1;
-        ParallaxingBackground _bgLayer2;
-        Rectangle _rectBackground;
-        const float Scale = 1f;
-
+        private Texture2D _mainBackground;
+        private ParallaxingBackground _bgLayer1;
+        private ParallaxingBackground _bgLayer2;
+        private Rectangle _rectBackground;
+        private const float Scale = 1f;
 
         // Keyboard states
-        KeyboardState _currentKeyboardState;
-        KeyboardState _prevKeyboardState;
+        private KeyboardState _currentKeyboardState;
+
+        private KeyboardState _prevKeyboardState;
 
         // Gamepad states
-        GamePadState _currentGamePadState;
-        GamePadState _prevGamePadState;
+        private GamePadState _currentGamePadState;
+
+        private GamePadState _prevGamePadState;
 
         // Mouse states
-        MouseState _currentMouseState;
-        MouseState _prevMouseState;
+        private MouseState _currentMouseState;
+
+        private MouseState _prevMouseState;
 
         // texture to hold the laser.
-        Texture2D laserTexture;
-        List<Laser> laserBeams;
+        private Texture2D laserTexture;
+
+        private List<Laser> laserBeams;
 
         // govern how fast our laser can fire.
-        TimeSpan laserSpawnTime;
-        TimeSpan previousLaserSpawnTime;
+        private TimeSpan laserSpawnTime;
+
+        private TimeSpan previousLaserSpawnTime;
 
         // The rate at which enemies appear.
-        TimeSpan enemySpawnTime;
-        TimeSpan previousSpawnTime;
+        private TimeSpan enemySpawnTime;
+
+        private TimeSpan previousSpawnTime;
 
         //Enemies
-        Texture2D enemyTexture;
-        List<Enemy> enemies;
+        private Texture2D enemyTexture;
+
+        private List<Enemy> enemies;
 
         // a random number gen
-        Random random;
+        private Random random;
 
         // Collections of explosions
-        List<Explosion> explosions;
+        private List<Explosion> explosions;
 
         //Texture to hold explosion animation.
-        Texture2D explosionTexture;
+        private Texture2D explosionTexture;
 
         //Our Laser Sound and Instance
         private SoundEffect laserSound;
+
         private SoundEffectInstance laserSoundInstance;
 
         //Our Explosion Sound.
         private SoundEffect explosionSound;
+
         private SoundEffectInstance explosionSoundInstance;
 
         /* Game Music */
         private Song gameMusic;
 
         public GameScreen(GraphicsDevice device,
-            ContentManager content) 
-            :base(device,content,"gameScreen")
+            ContentManager content)
+            : base(device, content, "gameScreen")
         {
-           
         }
 
         public override bool Init()
@@ -89,7 +95,7 @@ namespace WinShooterGame
 
             _bgLayer1 = new ParallaxingBackground();
             _bgLayer2 = new ParallaxingBackground();
-            _rectBackground = new Rectangle(0, 0, _device.Viewport.Width, 
+            _rectBackground = new Rectangle(0, 0, _device.Viewport.Width,
                 _device.Viewport.Height);
 
             TouchPanel.EnabledGestures = GestureType.FreeDrag;
@@ -158,7 +164,6 @@ namespace WinShooterGame
 
         public override void LoadContent()
         {
-          
             base.LoadContent();
         }
 
@@ -206,7 +211,6 @@ namespace WinShooterGame
             // Stop drawing
             _spriteBatch.End();
 
-
             base.Draw(gameTime);
         }
 
@@ -237,9 +241,8 @@ namespace WinShooterGame
             UpdateCollision();
 
             UpdateExplosions(gameTime);
-
             // Check if m is pressed and go to screen2
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (!_player.Active || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 SCREEN_MANAGER.goto_screen("gameOver");
             }
@@ -257,7 +260,7 @@ namespace WinShooterGame
             }
         }
 
-        void UpdatePlayer(GameTime gameTime)
+        private void UpdatePlayer(GameTime gameTime)
         {
             _player.Update(gameTime);
 
@@ -279,7 +282,6 @@ namespace WinShooterGame
                 posDelta = posDelta * PlayerMoveSpeed;
                 _player.Position = _player.Position + posDelta;
             }
-
 
             // Thumbstick controls
             _player.Position.X += _currentGamePadState.ThumbSticks.Left.X * PlayerMoveSpeed;
@@ -316,11 +318,9 @@ namespace WinShooterGame
 
         protected void UpdateLasers(GameTime gameTime)
         {
-
             // update laserbeams
             for (var i = 0; i < laserBeams.Count; i++)
             {
-
                 laserBeams[i].Update(gameTime);
 
                 // Remove the beam when its deactivated or is at the end of the screen.
@@ -344,7 +344,6 @@ namespace WinShooterGame
                 // Play the laser sound!
                 laserSoundInstance.Play();
             }
-
         }
 
         protected void AddLaser()
@@ -406,7 +405,7 @@ namespace WinShooterGame
             // create the animation object
             Animation enemyAnimation = new Animation();
 
-            // Init the animation with the correct 
+            // Init the animation with the correct
             // animation information
             enemyAnimation.Initialize(enemyTexture,
                 Vector2.Zero,
@@ -431,13 +430,10 @@ namespace WinShooterGame
 
             // Add the enemy to the active enemies list
             enemies.Add(enemy);
-
         }
-
 
         protected void UpdateCollision()
         {
-
             // we are going to use the rectangle's built in intersection
             // methods.
 
@@ -472,11 +468,13 @@ namespace WinShooterGame
 
                     // deal damge to the player
                     _player.Health -= enemies[i].Damage;
-
                     // if the player has no health destroy it.
                     if (_player.Health <= 0)
                     {
+                        AddExplosion(_player.Position);
                         _player.Active = false;
+                        _player.Position = Vector2.Zero;
+
                     }
                 }
 
@@ -492,7 +490,6 @@ namespace WinShooterGame
                     // test the bounds of the laser and enemy
                     if (laserRectangle.Intersects(enemyRectangle))
                     {
-
                         // Show the explosion where the enemy was...
                         AddExplosion(enemies[i].Position);
 

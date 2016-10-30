@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 
 namespace WinShooterGame
 {
-    class GameMenu : Screen
+    internal class GameMenu : Screen
     {
         protected Texture2D texture;
         protected Rectangle destinationRectagle;
@@ -20,10 +16,9 @@ namespace WinShooterGame
         protected int _screenWidth;
 
         public GameMenu(GraphicsDevice device,
-            ContentManager content) 
-            :base(device,content,"gameMenu")
+            ContentManager content)
+            : base(device, content, "gameMenu")
         {
-          
         }
 
         public override bool Init()

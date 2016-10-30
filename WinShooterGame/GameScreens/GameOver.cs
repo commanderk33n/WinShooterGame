@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 
 namespace WinShooterGame
 {
-    class GameOver : Screen
+    internal class GameOver : Screen
     {
         protected Texture2D texture;
         protected Rectangle destinationRectagle;
         protected Song menuMusic;
 
         public GameOver(GraphicsDevice device,
-            ContentManager content) 
-            :base(device,content,"gameOver")
+            ContentManager content)
+            : base(device, content, "gameOver")
         {
-          
         }
 
         public override bool Init()

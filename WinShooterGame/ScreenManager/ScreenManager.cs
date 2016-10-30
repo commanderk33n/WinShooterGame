@@ -1,36 +1,32 @@
 ﻿/************************************************************************/
-/* Author : David Amador 
+/* Author : David Amador
  * Web:      http://www.david-amador.com
- * Twitter : http://www.twitter.com/DJ_Link                             
- * 
+ * Twitter : http://www.twitter.com/DJ_Link
+ *
  * You can use this for whatever you want. If you want to give me some credit for it that's cool but not mandatory
 /************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace WinShooterGame
 {
     /// <summary>
     /// Screen Manager
     /// Keeps a list of available screensS
-    /// so you can switch between them, 
-    /// ie. jumping from the start screen to the game screen 
+    /// so you can switch between them,
+    /// ie. jumping from the start screen to the game screen
     /// </summary>
     public static class SCREEN_MANAGER
     {
         // Protected Members
         static private List<Screen> _screens = new List<Screen>();
+
         static private bool _started = false;
         static private Screen _previous = null;
+
         // Public Members
         static public Screen ActiveScreen = null;
-         
 
         /// <summary>
         /// Add new Screen
@@ -68,7 +64,7 @@ namespace WinShooterGame
             {
                 if (screen.Name == name)
                 {
-                    // Shutsdown Previous Screen           
+                    // Shutsdown Previous Screen
                     _previous = ActiveScreen;
                     if (ActiveScreen != null)
                     {
@@ -94,6 +90,7 @@ namespace WinShooterGame
                 ActiveScreen.Init();
             }
         }
+
         /// <summary>
         /// Falls back to previous selected screen if any
         /// </summary>
@@ -125,7 +122,7 @@ namespace WinShooterGame
         static public void Update(GameTime gameTime)
         {
             if (_started == false) return;
-            if (ActiveScreen!=null)
+            if (ActiveScreen != null)
             {
                 ActiveScreen.Update(gameTime);
             }
