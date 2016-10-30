@@ -19,13 +19,19 @@ namespace WinShooterGame
 
         // Keyboard states used to determine key presses
         private KeyboardState currentKeyboardState;
+
         private KeyboardState previousKeyboardState;
+
         // Gamepad states used to determine button presses
         private GamePadState currentGamePadState;
+
         private GamePadState previousGamePadState;
+
         // Mouse states use to track Mouse button press
         private MouseState currentMouseState;
+
         private MouseState previousMouseState;
+
         // Movement speed for the player
         private float playerMoveSpeed;
 
@@ -87,6 +93,7 @@ namespace WinShooterGame
             // Read the current state of the keyboard and gamepad and store it
             currentKeyboardState = Keyboard.GetState();
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
+            currentMouseState = Mouse.GetState();
             //Update the player
             UpdatePlayer(gameTime);
             base.Update(gameTime);
@@ -94,6 +101,26 @@ namespace WinShooterGame
 
         private void UpdatePlayer(GameTime gameTime)
         {
+            // Touch Gestures for MonoGame
+            while (TouchPanel.IsGestureAvailable)
+            {
+                GestureSample gesture = TouchPanel.ReadGesture();
+                if (gesture.GestureType == GestureType.FreeDrag)
+                {
+                    player.Position += gesture.Delta;
+                }
+            }
+            //Get Mouse State then Capture the Button type and Respond Button Press
+            Vector2 mousePosition = new Vector2(currentMouseState.X, currentMouseState.Y);
+            if (currentMouseState.LeftButton == ButtonState.Pressed)
+
+            {
+                Vector2 posDelta = mousePosition - player.Position;
+                posDelta.Normalize();
+                posDelta = posDelta * playerMoveSpeed;
+                player.Position = player.Position + posDelta;
+            }
+
             // Get Thumbstick Controls
             player.Position.X += currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed;
             player.Position.Y -= currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed;
