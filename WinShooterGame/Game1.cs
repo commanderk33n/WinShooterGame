@@ -1,78 +1,88 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WinShooterGame.GameObjects;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using Shooter;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace WinShooterGame
 {
     /// <summary>
-    /// This is the main type for your game
+    /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game
     {
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+
         // A movement speed for the player.
         private const float PlayerMoveSpeed = 8;
 
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private Player _player;
+        Player _player;
 
-        private Texture2D _mainBackground;
-        private ParallaxingBackground _bgLayer1;
-        private ParallaxingBackground _bgLayer2;
-        private Rectangle _rectBackground;
-        private const float Scale = 1f;
+        Texture2D _mainBackground;
+        ParallaxingBackground _bgLayer1;
+        ParallaxingBackground _bgLayer2;
+        Rectangle _rectBackground;
+        const float Scale = 1f;
+
 
         // Keyboard states
-        private KeyboardState _currentKeyboardState;
-
-        private KeyboardState _prevKeyboardState;
+        KeyboardState _currentKeyboardState;
+        KeyboardState _prevKeyboardState;
 
         // Gamepad states
-        private GamePadState _currentGamePadState;
-
-        private GamePadState _prevGamePadState;
+        GamePadState _currentGamePadState;
+        GamePadState _prevGamePadState;
 
         // Mouse states
-        private MouseState _currentMouseState;
-
-        private MouseState _prevMouseState;
+        MouseState _currentMouseState;
+        MouseState _prevMouseState;
 
         // texture to hold the laser.
-        private Texture2D laserTexture;
-
-        private List<Laser> laserBeams;
+        Texture2D laserTexture;
+        List<Laser> laserBeams;
 
         // govern how fast our laser can fire.
-        private TimeSpan laserSpawnTime;
-
-        private TimeSpan previousLaserSpawnTime;
+        TimeSpan laserSpawnTime;
+        TimeSpan previousLaserSpawnTime;
 
         // The rate at which enemies appear.
-        private TimeSpan enemySpawnTime;
-
-        private TimeSpan previousSpawnTime;
+        TimeSpan enemySpawnTime;
+        TimeSpan previousSpawnTime;
 
         //Enemies
-        private Texture2D enemyTexture;
-
-        private List<Enemy> enemies;
+        Texture2D enemyTexture;
+        List<Enemy> enemies;
 
         // a random number gen
-        private Random random;
+        Random random;
 
         // Collections of explosions
-        private List<Explosion> explosions;
+        List<Explosion> explosions;
 
         //Texture to hold explosion animation.
-        private Texture2D explosionTexture;
+        Texture2D explosionTexture;
+
+        //Our Laser Sound and Instance
+        private SoundEffect laserSound;
+        private SoundEffectInstance laserSoundInstance;
+
+        //Our Explosion Sound.
+        private SoundEffect explosionSound;
+        private SoundEffectInstance explosionSoundInstance;
+
+        /* Game Music */
+        private Song gameMusic;
+
+
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -84,6 +94,7 @@ namespace WinShooterGame
         /// </summary>
         protected override void Initialize()
         {
+            // TODO: Add your initialization logic here
             // TODO: Add your initialization logic here
             _player = new Player();
 
@@ -110,7 +121,6 @@ namespace WinShooterGame
             random = new Random();
 
             explosions = new List<Explosion>();
-
             base.Initialize();
         }
 
@@ -121,8 +131,9 @@ namespace WinShooterGame
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // TODO: use this.Content to load your game content here
             // Load the player resources
             Rectangle titleSafeArea = GraphicsDevice.Viewport.TitleSafeArea;
             var playerPosition = new Vector2(titleSafeArea.X, titleSafeArea.Y + titleSafeArea.Height / 2);
@@ -134,9 +145,9 @@ namespace WinShooterGame
             _player.Initialize(playerAnimation, playerPosition);
 
             // Load the background.
-            _bgLayer1.Initialize(Content, "Graphics\\bgLayer1", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -1);
-            _bgLayer2.Initialize(Content, "Graphics\\bgLayer2", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -2);
-            _mainBackground = Content.Load<Texture2D>("Graphics\\mainbackground");
+            _bgLayer1.Initialize(Content, "Graphics/bgLayer1", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -1);
+            _bgLayer2.Initialize(Content, "Graphics/bgLayer2", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -2);
+            _mainBackground = Content.Load<Texture2D>("Graphics/mainbackground");
 
             // load the enemy texture.
             enemyTexture = Content.Load<Texture2D>("Graphics\\mineAnimation");
@@ -146,15 +157,32 @@ namespace WinShooterGame
 
             // Load the exploision sprite strip
             explosionTexture = Content.Load<Texture2D>("Graphics\\explosion");
+
+            // Load the laserSound Effect and create the effect Instance
+            laserSound = Content.Load<SoundEffect>("Sounds\\laserFire");
+            laserSoundInstance = laserSound.CreateInstance();
+
+            // Load the laserSound Effect and create the effect Instance
+            explosionSound = Content.Load<SoundEffect>("Sounds\\explosion");
+            explosionSoundInstance = explosionSound.CreateInstance();
+
+            // Load the game music
+            gameMusic = Content.Load<Song>("Sounds\\gameMusic");
+
+            // Start playing the music.
+            MediaPlayer.Play(gameMusic);
+
         }
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
+        /// game-specific content.
         /// </summary>
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            laserSoundInstance.Dispose();
+            explosionSoundInstance.Dispose();
         }
 
         /// <summary>
@@ -164,6 +192,7 @@ namespace WinShooterGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            // TODO: Add your update logic here
             // User inputs.
             // Save the previous state of the keyboard and game pad so we can determine single key/button presses
             _prevGamePadState = _currentGamePadState;
@@ -192,6 +221,55 @@ namespace WinShooterGame
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // TODO: Add your drawing code here
+
+
+            // TODO: Add your drawing code here
+            // Start drawing
+            spriteBatch.Begin();
+
+            // Draw background.
+            spriteBatch.Draw(_mainBackground, _rectBackground, Color.White);
+            _bgLayer1.Draw(spriteBatch);
+            _bgLayer2.Draw(spriteBatch);
+
+
+            // Draw the Player
+            _player.Draw(spriteBatch);
+
+            // Draw the lasers.
+            foreach (var l in laserBeams)
+            {
+                l.Draw(spriteBatch);
+            }
+
+
+            // draw the enemies
+            foreach (var e in enemies)
+            {
+                e.Draw(spriteBatch);
+            };
+
+            // draw explosions
+            foreach (var e in explosions)
+            {
+                e.Draw(spriteBatch);
+            };
+
+            // Stop drawing
+            spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+
         private void UpdateExplosions(GameTime gameTime)
         {
             for (var e = 0; e < explosions.Count; e++)
@@ -203,7 +281,7 @@ namespace WinShooterGame
             }
         }
 
-        private void UpdatePlayer(GameTime gameTime)
+        void UpdatePlayer(GameTime gameTime)
         {
             _player.Update(gameTime);
 
@@ -225,6 +303,7 @@ namespace WinShooterGame
                 posDelta = posDelta * PlayerMoveSpeed;
                 _player.Position = _player.Position + posDelta;
             }
+
 
             // Thumbstick controls
             _player.Position.X += _currentGamePadState.ThumbSticks.Left.X * PlayerMoveSpeed;
@@ -259,55 +338,13 @@ namespace WinShooterGame
             _player.Position.Y = MathHelper.Clamp(_player.Position.Y, 0, GraphicsDevice.Viewport.Height - _player.Height);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-            // Start drawing
-            _spriteBatch.Begin();
-
-            // Draw background.
-            _spriteBatch.Draw(_mainBackground, _rectBackground, Color.White);
-            _bgLayer1.Draw(_spriteBatch);
-            _bgLayer2.Draw(_spriteBatch);
-
-            // Draw the Player
-            _player.Draw(_spriteBatch);
-
-            // Draw the lasers.
-            foreach (var l in laserBeams)
-            {
-                l.Draw(_spriteBatch);
-            }
-
-            // draw the enemies
-            foreach (var e in enemies)
-            {
-                e.Draw(_spriteBatch);
-            };
-
-            // draw explosions
-            foreach (var e in explosions)
-            {
-                e.Draw(_spriteBatch);
-            };
-
-            // Stop drawing
-            _spriteBatch.End();
-
-            base.Draw(gameTime);
-        }
-
         protected void UpdateLasers(GameTime gameTime)
         {
+
             // update laserbeams
             for (var i = 0; i < laserBeams.Count; i++)
             {
+
                 laserBeams[i].Update(gameTime);
 
                 // Remove the beam when its deactivated or is at the end of the screen.
@@ -327,7 +364,11 @@ namespace WinShooterGame
 
                 // Add the laer to our list.
                 AddLaser();
+
+                // Play the laser sound!
+                laserSoundInstance.Play();
             }
+
         }
 
         protected void AddLaser()
@@ -389,7 +430,7 @@ namespace WinShooterGame
             // create the animation object
             Animation enemyAnimation = new Animation();
 
-            // Init the animation with the correct
+            // Init the animation with the correct 
             // animation information
             enemyAnimation.Initialize(enemyTexture,
                 Vector2.Zero,
@@ -414,10 +455,13 @@ namespace WinShooterGame
 
             // Add the enemy to the active enemies list
             enemies.Add(enemy);
+
         }
+
 
         protected void UpdateCollision()
         {
+
             // we are going to use the rectangle's built in intersection
             // methods.
 
@@ -472,6 +516,7 @@ namespace WinShooterGame
                     // test the bounds of the laser and enemy
                     if (laserRectangle.Intersects(enemyRectangle))
                     {
+
                         // Show the explosion where the enemy was...
                         AddExplosion(enemies[i].Position);
 
@@ -503,6 +548,10 @@ namespace WinShooterGame
             explosion.Initialize(explosionAnimation, enemyPosition);
 
             explosions.Add(explosion);
+
+            /* play the explosion sound. */
+            explosionSound.Play();
+            //explosionSoundInstance.Play();
         }
     }
 }

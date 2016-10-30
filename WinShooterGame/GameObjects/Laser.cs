@@ -1,38 +1,44 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WinShooterGame;
 
-namespace WinShooterGame
+
+
+namespace WinShooterGame.GameObjects
 {
-    internal class Laser
+    public class Laser
     {
+
         // animation the represents the laser animation.
         public Animation LaserAnimation;
 
-        // the speed the laser travels
-        private float laserMoveSpeed = 30f;
+        // the speed the laser traves
+        float laserMoveSpeed = 30f;
 
-        // position of the laser
+        // postion of the laser
         public Vector2 Position;
 
         // The damage the laser deals.
-        private int Damage = 10;
+        int Damage = 10;
 
         // set the laser to active
         public bool Active;
 
-        // Laser beams range.
-        private int Range;
+        // Range of the laser.
+        int Range;
 
-        // the width of the laser image.
+        // the width of the player image.
         public int Width
         {
             get { return LaserAnimation.FrameWidth; }
         }
 
-        // the height of the laser image.
+        // the height of the player image.
         public int Height
         {
             get { return LaserAnimation.FrameHeight; }
+
         }
 
         public void Initialize(Animation animation, Vector2 position)
@@ -45,6 +51,7 @@ namespace WinShooterGame
         public void Update(GameTime gameTime)
         {
             Position.X += laserMoveSpeed;
+
             LaserAnimation.Position = Position;
             LaserAnimation.Update(gameTime);
         }

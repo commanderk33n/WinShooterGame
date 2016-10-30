@@ -1,20 +1,20 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace WinShooterGame
 {
-    public class ParallaxingBackground
+    class ParallaxingBackground
     {
-        private Texture2D _texture;
+        Texture2D _texture;
 
         // An array of positions of the parallaxing background.
-        private Vector2[] _positions;
+        Vector2[] _positions;
 
-        private int _speed;
-        private int _screenHeight;
-        private int _screenWidth;
+        int _speed;
+        int _screenHeight;
+        int _screenWidth;
 
         public void Initialize(ContentManager content, String texturePath, int screenWidth, int screenHeight, int speed)
         {

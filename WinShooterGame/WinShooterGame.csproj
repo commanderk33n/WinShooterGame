@@ -101,15 +101,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Enemy.cs" />
-    <Compile Include="Explosion.cs" />
+    <Compile Include="GameObjects\Enemy.cs" />
+    <Compile Include="GameObjects\Explosion.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Game1.cs" />
-    <Compile Include="Laser.cs" />
+    <Compile Include="GameObjects\Laser.cs" />
     <Compile Include="ParallaxingBackground.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="GameObjects\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -136,10 +136,10 @@
     <Content Include="Content\Graphics\mineAnimation.png" />
     <Content Include="Content\Graphics\player.png" />
     <Content Include="Content\Graphics\shipAnimation.png" />
-    <Content Include="Content\Sound\explosion.wav" />
-    <Content Include="Content\Sound\gameMusic.mp3" />
-    <Content Include="Content\Sound\laserFire.wav" />
-    <Content Include="Content\Sound\menuMusic.mp3" />
+    <Content Include="Content\Sounds\explosion.wav" />
+    <Content Include="Content\Sounds\gameMusic.mp3" />
+    <Content Include="Content\Sounds\laserFire.wav" />
+    <Content Include="Content\Sounds\menuMusic.mp3" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
