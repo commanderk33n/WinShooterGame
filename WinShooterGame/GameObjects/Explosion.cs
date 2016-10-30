@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WinShooterGame;
 
 namespace WinShooterGame.GameObjects
 {
-    class Explosion
+    internal class Explosion
     {
         public Animation explosionAnimation;
 
@@ -13,7 +11,7 @@ namespace WinShooterGame.GameObjects
 
         public bool Active;
 
-        int timeToLive;
+        private int timeToLive;
 
         public int Height
         {
@@ -31,7 +29,6 @@ namespace WinShooterGame.GameObjects
             }
         }
 
-
         public void Initialize(Animation animation, Vector2 position)
         {
             explosionAnimation = animation;
@@ -40,7 +37,6 @@ namespace WinShooterGame.GameObjects
 
             timeToLive = 30;
         }
-
 
         public void Update(GameTime gameTime)
         {

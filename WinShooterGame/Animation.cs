@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WinShooterGame
@@ -12,31 +6,31 @@ namespace WinShooterGame
     public class Animation
     {
         // The image representing the collection of images used for animation
-        Texture2D spriteStrip;
+        private Texture2D spriteStrip;
 
         // The scale used to display the sprite strip
-        float scale;
+        private float scale;
 
         // The time since we last updated the frame
-        int elapsedTime;
+        private int elapsedTime;
 
         // The time we display a frame until the next one
-        int frameTime;
+        private int frameTime;
 
         // The number of frames that the animation contains
-        int frameCount;
+        private int frameCount;
 
         // The index of the current frame we are displaying
-        int currentFrame;
+        private int currentFrame;
 
         // The color of the frame we will be displaying
-        Color color;
+        private Color color;
 
         // The area of the image strip we want to display
-        Rectangle sourceRect = new Rectangle();
+        private Rectangle sourceRect = new Rectangle();
 
         // The area where we want to display the image strip in the game
-        Rectangle destinationRect = new Rectangle();
+        private Rectangle destinationRect = new Rectangle();
 
         // Width of a given frame
         public int FrameWidth;

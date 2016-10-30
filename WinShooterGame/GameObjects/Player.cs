@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WinShooterGame.GameObjects
 {
-    class Player
+    internal class Player
     {
         public Animation PlayerAnimation;
 
@@ -29,7 +24,6 @@ namespace WinShooterGame.GameObjects
         public void Initialize(Animation animation, Vector2 position)
         {
             PlayerAnimation = animation;
-
 
             Position = position;
             Active = true;

@@ -1,8 +1,5 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WinShooterGame;
-
 
 namespace WinShooterGame.GameObjects
 {
@@ -11,7 +8,7 @@ namespace WinShooterGame.GameObjects
         // animation represneting the enemy.
         public Animation EnemyAnimation;
 
-        // The postion of the enemy ship relative to the 
+        // The postion of the enemy ship relative to the
         // top of left corner of the screen
         public Vector2 Position;
 
@@ -19,7 +16,7 @@ namespace WinShooterGame.GameObjects
         public bool Active;
 
         // Hit points of the enemy, if this goes
-        // to zero the enemy dies.      
+        // to zero the enemy dies.
         public int Health;
 
         // the amount of damage that the enemy
@@ -85,7 +82,6 @@ namespace WinShooterGame.GameObjects
             {
                 //deactivate the enemy
                 Active = false;
-
             }
         }
 
