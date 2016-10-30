@@ -1,29 +1,34 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WinShooterGame
 {
-    class Enemy
+    internal class Enemy
     {
         // Animation representing the enemy
         public Animation EnemyAnimation;
+
         // The position of the enemy ship relative to the top left corner of the screen
         public Vector2 Position;
+
         // The state of the Enemy Ship
         public bool Active;
+
         // The hit points of the enemy, if this goes to zero the enemy dies
         public int Health;
+
         // The amount of damage the enemy inflicts on the player ship
         public int Damage;
+
         // The amount of score the enemy will give to the player
         public int Value;
-      
+
         // Get the width of the enemy ship
         public int Width
         {
             get { return EnemyAnimation.FrameWidth; }
         }
+
         // Get the height of the enemy ship
         public int Height
         {
@@ -31,7 +36,7 @@ namespace WinShooterGame
         }
 
         // The speed at which the enemy moves
-        float enemyMoveSpeed;
+        private float enemyMoveSpeed;
 
         public void Initialize(Animation animation, Vector2 position)
         {

@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WinShooterGame;
 
 namespace Shooter
 {
-    class Player
+    internal class Player
     {
         // Representing the player
         //   public Texture2D PlayerTexture;
@@ -25,6 +24,7 @@ namespace Shooter
         {
             get { return PlayerAnimation.FrameWidth; }
         }
+
         // Get the height of the player ship
         public int Height
         {
@@ -56,9 +56,6 @@ namespace Shooter
         {
             // spriteBatch.Draw(PlayerTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             PlayerAnimation.Draw(spriteBatch);
-
         }
-
-
     }
 }
