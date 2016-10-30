@@ -1,51 +1,48 @@
-﻿// ParallaxingBackground.cs
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace WinShooterGame
 {
-    internal class ParallaxingBackground
+    public class ParallaxingBackground
     {
-        // The image representing the parallaxing background
-        private Texture2D texture;
+        private Texture2D _texture;
 
-        // An array of positions of the parallaxing background
-        private Vector2[] positions;
+        // An array of positions of the parallaxing background.
+        private Vector2[] _positions;
 
-        // The speed which the background is moving
-        private int speed;
-
-        private int bgHeight;
-        private int bgWidth;
+        private int _speed;
+        private int _screenHeight;
+        private int _screenWidth;
 
         public void Initialize(ContentManager content, String texturePath, int screenWidth, int screenHeight, int speed)
         {
-            bgHeight = screenHeight;
-            bgWidth = screenWidth;
+            _screenHeight = screenHeight;
+            _screenWidth = screenWidth;
 
-            // Load the background texture we will be using
-            texture = content.Load<Texture2D>(texturePath);
-            // Set the speed of the background
-            this.speed = speed;
-            // If we divide the screen with the texture width then we can determine the number of tiles need.
-            // We add 1 to it so that we won’t have a gap in the tiling
-            positions = new Vector2[screenWidth / texture.Width + 1];
-            // Set the initial positions of the parallaxing background
-            for (int i = 0; i < positions.Length; i++)
+            _texture = content.Load<Texture2D>(texturePath);
+
+            _speed = speed;
+
+            // If we divide the screen with the texture width then we can determine the number of tiles needed.
+            // We add 1 to it so that we won't have a gap in the tiling.
+            int numOfTiles = (int)(Math.Ceiling(_screenWidth / (float)_texture.Width) + 1);
+            _positions = new Vector2[numOfTiles];
+
+            // Set the initial positions of the parallazing background
+            for (int i = 0; i < _positions.Length; i++)
             {
-                // We need the tiles to be side by side to create a tiling effect
-                positions[i] = new Vector2(i * texture.Width, 0);
+                _positions[i] = new Vector2(i * _texture.Width, 0);
             }
         }
 
         public void Update(GameTime gameTime)
         {
             // Update the positions of the background
-            for (int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < _positions.Length; i++)
             {
-                positions[i].X += speed;
+                _positions[i].X += _speed;
 
                 // If the speed has the background moving to the left.
                 //                if (_speed <= 0)
@@ -66,19 +63,19 @@ namespace WinShooterGame
                 //                }
             }
 
-            for (int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < _positions.Length; i++)
             {
-                if (speed <= 0)
+                if (_speed <= 0)
                 {
                     // Check if the texture is out of view and then put that texture at the end of the screen.
-                    if (positions[i].X <= texture.Width)
+                    if (_positions[i].X <= -_texture.Width)
                     {
                         WrapTextureToLeft(i);
                     }
                 }
                 else
                 {
-                    if (positions[i].X >= texture.Width * (positions.Length - 1))
+                    if (_positions[i].X >= _texture.Width * (_positions.Length - 1))
                     {
                         WrapTextureToRight(i);
                     }
@@ -92,9 +89,9 @@ namespace WinShooterGame
             // one pixel to the right of the tile before it.
             int prevTexture = index - 1;
             if (prevTexture < 0)
-                prevTexture = positions.Length - 1;
+                prevTexture = _positions.Length - 1;
 
-            positions[index].X = positions[prevTexture].X + texture.Width;
+            _positions[index].X = _positions[prevTexture].X + _texture.Width;
         }
 
         private void WrapTextureToRight(int index)
@@ -102,18 +99,20 @@ namespace WinShooterGame
             // If the textures are scrolling to the right, when the tile wraps, it should be placed to the left
             // of the tile that comes after it.
             int nextTexture = index + 1;
-            if (nextTexture == positions.Length)
+            if (nextTexture == _positions.Length)
                 nextTexture = 0;
 
-            positions[index].X = positions[nextTexture].X - texture.Width;
+            _positions[index].X = _positions[nextTexture].X - _texture.Width;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < _positions.Length; i++)
             {
-                Rectangle rectBg = new Rectangle((int)positions[i].X, (int)positions[i].Y, bgWidth, bgHeight);
-                spriteBatch.Draw(texture, rectBg, Color.White);
+                var rectBg = new Rectangle((int)_positions[i].X, (int)_positions[i].Y,
+                                           _texture.Width,
+                                           _screenHeight);
+                spriteBatch.Draw(_texture, rectBg, Color.White);
             }
         }
     }
