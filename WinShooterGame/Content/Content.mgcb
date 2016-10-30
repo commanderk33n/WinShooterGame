@@ -193,3 +193,9 @@
 /processorParam:Quality=Best
 /build:Sounds/menuMusic.mp3
 
+#begin Graphics/Score.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Graphics/Score.spritefont
+

@@ -11,6 +11,8 @@ namespace WinShooterGame
         protected Texture2D texture;
         protected Rectangle destinationRectagle;
         protected Song menuMusic;
+        private SpriteFont font;
+        private int score;
 
         public GameMenu(GraphicsDevice device,
             ContentManager content)
@@ -22,7 +24,7 @@ namespace WinShooterGame
         {
             texture = _content.Load<Texture2D>("graphics\\mainMenu");
             menuMusic = _content.Load<Song>("sounds\\menuMusic");
-
+            font = _content.Load<SpriteFont>("Graphics\\Score");
             destinationRectagle =
               new Rectangle(0, 0,
              texture.Width,
@@ -43,6 +45,7 @@ namespace WinShooterGame
             _device.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
             _spriteBatch.Draw(texture, destinationRectagle, Color.White);
+            _spriteBatch.DrawString(font, "<Enter>Start | <ESC>End", new Vector2(200, 280), Color.Black);
             base.Draw(gameTime);
         }
 

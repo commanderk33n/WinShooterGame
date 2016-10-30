@@ -25,7 +25,7 @@ namespace WinShooterGame
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = DEFAULT_SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = DEFAULT_SCREEN_HEIGTH;
-
+            IsMouseVisible = true;
             Content.RootDirectory = "Content";
         }
 
@@ -60,10 +60,6 @@ namespace WinShooterGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Initialize the screen state variables
-            mIsTitleScreenShown = true;
-            mIsGameRunning = false;
-
             /* Have the active screen initilize itself. */
             SCREEN_MANAGER.LoadContent();
         }
@@ -92,7 +88,7 @@ namespace WinShooterGame
             }
             if (Keyboard.GetState().IsKeyDown(Keys.P))
             {
-                mIsTitleScreenShown = true;
+                SCREEN_MANAGER.goto_screen("gameMenu");
             }
 
             SCREEN_MANAGER.Update(gameTime);

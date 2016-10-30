@@ -18,6 +18,9 @@ namespace WinShooterGame
 
         private Player _player;
 
+        private SpriteFont font;
+        private int score = 0;
+
         private Texture2D _mainBackground;
         private ParallaxingBackground _bgLayer1;
         private ParallaxingBackground _bgLayer2;
@@ -119,11 +122,11 @@ namespace WinShooterGame
             random = new Random();
 
             explosions = new List<Explosion>();
-            boss = new GameObjects.Boss();
+            boss = new Boss();
 
             Rectangle titleSafeArea = _device.Viewport.TitleSafeArea;
             var playerPosition = new Vector2(titleSafeArea.X, titleSafeArea.Y + titleSafeArea.Height / 2);
-
+            font = _content.Load<SpriteFont>("Graphics\\Score");
             Texture2D playerTexture = _content.Load<Texture2D>("Graphics\\shipAnimation");
             Animation playerAnimation = new Animation();
             playerAnimation.Initialize(playerTexture, playerPosition, 115, 69, 8, 30, Color.White, 1, true);
@@ -161,7 +164,6 @@ namespace WinShooterGame
 
             // Start playing the music.
             MediaPlayer.Play(gameMusic);
-           
 
             return base.Init();
         }
@@ -191,9 +193,18 @@ namespace WinShooterGame
             _bgLayer1.Draw(_spriteBatch);
             _bgLayer2.Draw(_spriteBatch);
 
+            // Draw Score
+            _spriteBatch.DrawString(font, "Score: " + score, new Vector2(150, 0), Color.Black);
+            _spriteBatch.DrawString(font, "Health: " + _player.Health, new Vector2(150, 30), Color.Black);
+
             // Draw the Player
             _player.Draw(_spriteBatch);
-          //  _spriteBatch.Draw(bossTexture, _rectBackground, Color.Blue);
+            //  _spriteBatch.Draw(bossTexture, _rectBackground, Color.Blue);
+            if (boss.Active)
+            {
+                _spriteBatch.Draw(bossTexture, _rectBackground, Color.Beige);
+            }
+
             // Draw the lasers.
             foreach (var l in laserBeams)
             {
@@ -245,7 +256,15 @@ namespace WinShooterGame
             UpdateCollision();
 
             UpdateExplosions(gameTime);
-           // UpdateBoss(gameTime);
+            if (score >= 100 & !boss.Active)
+            {
+                AddBoss();
+            }
+            if (boss.Active)
+            {
+                UpdateBoss(gameTime);
+                // TODO: if boss.inactive exit -> highscore
+            }
 
             // Check if ESC is pressed or Player is inactive and go to GameOver screen
             if (!_player.Active || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -340,27 +359,27 @@ namespace WinShooterGame
         protected void AddBoss()
         {
             Animation bossAnimation = new Animation();
-
-            Vector2 position = new Vector2(1, 5);
-
+            Vector2 position = new Vector2(200, 100);
             bossAnimation.Initialize(bossTexture,
-             position,
-              47,
-              61,
-              8,
-              30,
-              Color.White,
-              1f,
-              true);
+              position,
+               47,
+               61,
+               8,
+               30,
+               Color.White,
+               1f,
+               true);
 
             // init the boss
-            //boss.Initialize(bossAnimation, position);
-            // TODO 
+            boss.Initialize(bossAnimation, position);
         }
 
         protected void UpdateBoss(GameTime gameTime)
         {
-            boss.Update(gameTime);
+            if (boss.Active)
+            {
+                boss.Update(gameTime);
+            }
         }
 
         protected void FireLaser(GameTime gameTime)
@@ -529,6 +548,7 @@ namespace WinShooterGame
 
                         // kill off the laserbeam
                         laserBeams[l].Active = false;
+                        score++;
                     }
                 }
             }
