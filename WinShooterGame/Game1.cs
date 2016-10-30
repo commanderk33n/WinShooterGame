@@ -9,6 +9,7 @@ namespace WinShooterGame
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
+    ///
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
@@ -35,6 +36,14 @@ namespace WinShooterGame
         // Movement speed for the player
         private float playerMoveSpeed;
 
+        // Image used to display the static background
+        private Texture2D mainBackground;
+
+        private Rectangle rectBackground;
+        private float scale = 1f;
+        private ParallaxingBackground bgLayer1;
+        private ParallaxingBackground bgLayer2;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -51,6 +60,9 @@ namespace WinShooterGame
         {
             // Initialize the player class
             player = new Player();
+            //Background
+            bgLayer1 = new ParallaxingBackground();
+            bgLayer2 = new ParallaxingBackground();
             // Set a constant player move speed
             playerMoveSpeed = 8.0f;
             //Enable the FreeDrag gesture.
@@ -68,7 +80,15 @@ namespace WinShooterGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // Load the player resources
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
-            player.Initialize(Content.Load<Texture2D>("Graphics//player"), playerPosition);
+            // Load the player resources
+            Animation playerAnimation = new Animation();
+            Texture2D playerTexture = Content.Load<Texture2D>("Graphics\\shipAnimation");
+            playerAnimation.Initialize(playerTexture, Vector2.Zero, 115, 69, 8, 30, Color.White, 1f, true);
+            player.Initialize(playerAnimation, playerPosition);
+            // Load the parallaxing background
+            bgLayer1.Initialize(Content, "Graphics\\bgLayer1", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -1);
+            bgLayer2.Initialize(Content, "Graphics\\bgLayer2", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -2);
+            mainBackground = Content.Load<Texture2D>("Graphics\\mainbackground");
         }
 
         /// <summary>
@@ -101,6 +121,10 @@ namespace WinShooterGame
 
         private void UpdatePlayer(GameTime gameTime)
         {
+            player.Update(gameTime);
+            // Update the parallaxing background
+            bgLayer1.Update(gameTime);
+            bgLayer2.Update(gameTime);
             // Touch Gestures for MonoGame
             while (TouchPanel.IsGestureAvailable)
             {
@@ -155,6 +179,11 @@ namespace WinShooterGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
             // Start drawing
             spriteBatch.Begin();
+            // Draw the Main Background Texture
+            spriteBatch.Draw(mainBackground, rectBackground, Color.White);
+            // Draw the moving Background
+            bgLayer1.Draw(spriteBatch);
+            bgLayer2.Draw(spriteBatch);
             // Draw the Player
             player.Draw(spriteBatch);
             // Stop drawing
