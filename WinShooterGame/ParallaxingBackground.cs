@@ -45,22 +45,39 @@ namespace WinShooterGame
             // Update the positions of the background
             for (int i = 0; i < positions.Length; i++)
             {
-                // Update the position of the screen by adding the speed
                 positions[i].X += speed;
-                // If the speed has the background moving to the left
+
+                // If the speed has the background moving to the left.
+                //                if (_speed <= 0)
+                //                {
+                //                    // Check if the texture is out of view and then put that texture at the end of the screen.
+                //                    if (_positions[i].X <= -_texture.Width)
+                //                    {
+                //                        _positions[i].X = _texture.Width * (_positions.Length - 1);
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    // Check if the texture is out of view then position it to the start of the screen
+                //                    if (_positions[i].X >= _texture.Width * (_positions.Length - 1))
+                //                    {
+                //                        _positions[i].X = -_texture.Width;
+                //                    }
+                //                }
+            }
+
+            for (int i = 0; i < positions.Length; i++)
+            {
                 if (speed <= 0)
                 {
-                    // Check the texture is out of view then put that texture at the end of the screen
-                    if (positions[i].X <= -texture.Width)
+                    // Check if the texture is out of view and then put that texture at the end of the screen.
+                    if (positions[i].X <= texture.Width)
                     {
                         WrapTextureToLeft(i);
                     }
                 }
-
-                // If the speed has the background moving to the right
                 else
                 {
-                    // Check if the texture is out of view then position it to the start of the screen
                     if (positions[i].X >= texture.Width * (positions.Length - 1))
                     {
                         WrapTextureToRight(i);

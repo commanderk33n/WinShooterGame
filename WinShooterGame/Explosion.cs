@@ -1,20 +1,20 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WinShooterGame;
 
 namespace WinShooterGame
 {
-    class Explosion
+    internal class Explosion
     {
-        Animation explosionAnimation;
-        Vector2 Position;
+        private Animation explosionAnimation;
+        private Vector2 Position;
         public bool Active;
-        int timeToLive;
+        private int timeToLive;
+
         public int Width
         {
             get { return explosionAnimation.FrameWidth; }
         }
+
         public int Height
         {
             get { return explosionAnimation.FrameWidth; }
@@ -27,6 +27,7 @@ namespace WinShooterGame
             Active = true;
             timeToLive = 30;
         }
+
         public void Update(GameTime gameTime)
         {
             explosionAnimation.Update(gameTime);
@@ -36,10 +37,10 @@ namespace WinShooterGame
                 this.Active = false;
             }
         }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             explosionAnimation.Draw(spriteBatch);
         }
-
     }
 }

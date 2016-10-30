@@ -57,10 +57,10 @@ namespace WinShooterGame
         private TimeSpan previousLaserSpawnTime;
 
         // Collections of explosions
-        List<Explosion> explosions;
+        private List<Explosion> explosions;
 
         //Texture to hold explosion animation.
-        Texture2D explosionTexture;
+        private Texture2D explosionTexture;
 
         // Enemies
         private Texture2D enemyTexture;
