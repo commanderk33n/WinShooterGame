@@ -12,7 +12,6 @@ namespace WinShooterGame
         protected Rectangle destinationRectagle;
         protected Song menuMusic;
         private SpriteFont font;
-        private int score;
 
         public GameMenu(GraphicsDevice device,
             ContentManager content)

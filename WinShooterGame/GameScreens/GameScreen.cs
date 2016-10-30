@@ -63,7 +63,7 @@ namespace WinShooterGame
         private List<Enemy> enemies;
 
         private Texture2D bossTexture;
-        private Boss boss;
+        private Boss _boss;
 
         // a random number gen
         private Random random;
@@ -122,7 +122,7 @@ namespace WinShooterGame
             random = new Random();
 
             explosions = new List<Explosion>();
-            boss = new Boss();
+            _boss = new Boss();
 
             Rectangle titleSafeArea = _device.Viewport.TitleSafeArea;
             var playerPosition = new Vector2(titleSafeArea.X, titleSafeArea.Y + titleSafeArea.Height / 2);
@@ -200,7 +200,7 @@ namespace WinShooterGame
             // Draw the Player
             _player.Draw(_spriteBatch);
             //  _spriteBatch.Draw(bossTexture, _rectBackground, Color.Blue);
-            if (boss.Active)
+            if (_boss.Active)
             {
                 _spriteBatch.Draw(bossTexture, _rectBackground, Color.Beige);
             }
@@ -256,11 +256,11 @@ namespace WinShooterGame
             UpdateCollision();
 
             UpdateExplosions(gameTime);
-            if (score >= 100 & !boss.Active)
+            if (score >= 100 & !_boss.Active)
             {
                 AddBoss();
             }
-            if (boss.Active)
+            if (_boss.Active)
             {
                 UpdateBoss(gameTime);
                 // TODO: if boss.inactive exit -> highscore
@@ -359,9 +359,9 @@ namespace WinShooterGame
         protected void AddBoss()
         {
             Animation bossAnimation = new Animation();
-            Vector2 position = new Vector2(200, 100);
+
             bossAnimation.Initialize(bossTexture,
-              position,
+              Vector2.Zero,
                47,
                61,
                8,
@@ -369,16 +369,16 @@ namespace WinShooterGame
                Color.White,
                1f,
                true);
-
+            Vector2 position = new Vector2(200, 100);
             // init the boss
-            boss.Initialize(bossAnimation, position);
+            _boss.Initialize(bossAnimation, position);
         }
 
         protected void UpdateBoss(GameTime gameTime)
         {
-            if (boss.Active)
+            if (_boss.Active)
             {
-                boss.Update(gameTime);
+                _boss.Update(gameTime);
             }
         }
 
@@ -432,7 +432,7 @@ namespace WinShooterGame
         protected void UpdateEnemies(GameTime gameTime)
         {
             // spawn a new enemy every 1.5 seconds.
-            if (gameTime.TotalGameTime - previousSpawnTime > enemySpawnTime)
+            if (gameTime.TotalGameTime - previousSpawnTime > enemySpawnTime & !_boss.Active)
             {
                 previousSpawnTime = gameTime.TotalGameTime;
 
