@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace WinShooterGame
 {
@@ -9,10 +10,15 @@ namespace WinShooterGame
     public class Game1 : Game
     {
         private const int DEFAULT_SCREEN_WIDTH = 800;
-        private const int DEFAULT_SCREEN_HEIGTH = 480;
+        private const int DEFAULT_SCREEN_HEIGTH = 600;
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+
+        //Screen State variables to indicate what is the current screen
+        private bool mIsGameRunning;
+
+        private bool mIsTitleScreenShown;
 
         public Game1()
         {
@@ -54,6 +60,10 @@ namespace WinShooterGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Initialize the screen state variables
+            mIsTitleScreenShown = true;
+            mIsGameRunning = false;
+
             /* Have the active screen initilize itself. */
             SCREEN_MANAGER.LoadContent();
         }
@@ -76,9 +86,16 @@ namespace WinShooterGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            /* have the actrive screen update */
-            SCREEN_MANAGER.Update(gameTime);
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            {
+                mIsTitleScreenShown = true;
+            }
 
+            SCREEN_MANAGER.Update(gameTime);
             base.Update(gameTime);
         }
 

@@ -12,9 +12,6 @@ namespace WinShooterGame
         protected Rectangle destinationRectagle;
         protected Song menuMusic;
 
-        protected int _screenHeight;
-        protected int _screenWidth;
-
         public GameMenu(GraphicsDevice device,
             ContentManager content)
             : base(device, content, "gameMenu")
@@ -51,8 +48,8 @@ namespace WinShooterGame
 
         public override void Update(GameTime gameTime)
         {
-            // Check if m is pressed and go to screen2
-            if (Keyboard.GetState().IsKeyDown(Keys.N))
+            // Check if Enter is pressed to start game
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 SCREEN_MANAGER.goto_screen("gameScreen");
             }

@@ -34,6 +34,12 @@ namespace WinShooterGame.GameObjects
         {
             PlayerAnimation.Position = Position;
             PlayerAnimation.Update(gameTime);
+            /* Players health reaches 0 then deactivate it. */
+            if (Health <= 0)
+            {
+                //deactivate the player
+                Active = false;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
