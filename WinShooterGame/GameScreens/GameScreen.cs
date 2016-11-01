@@ -88,8 +88,8 @@ namespace WinShooterGame
         private Song gameMusic;
 
         public GameScreen(GraphicsDevice device,
-            ContentManager content)
-            : base(device, content, "gameScreen")
+           ContentManager content)
+           : base(device, content, "gameScreen")
         {
         }
 
@@ -200,7 +200,11 @@ namespace WinShooterGame
             // Draw the Player
             _player.Draw(_spriteBatch);
 
-            _boss.Draw(_spriteBatch);
+            // Draw Boss when active
+            if (_boss.Active)
+            {
+                _boss.Draw(_spriteBatch);
+            }
 
             // Draw the lasers.
             foreach (var l in laserBeams)
@@ -248,7 +252,7 @@ namespace WinShooterGame
             // update the enemies
             UpdateEnemies(gameTime);
 
-            if (score >= 100 && !_boss.Active)
+            if (score >= 3 && !_boss.Active)
             {
                 AddBoss();
             }
@@ -356,7 +360,9 @@ namespace WinShooterGame
         protected void AddBoss()
         {
             Animation bossAnimation = new Animation();
-            var position = new Vector2(_device.Viewport.Width - bossTexture.Width * 2, _device.Viewport.Height / 2);
+
+            var position = new Vector2(_device.Viewport.Width - bossTexture.Width, _device.Viewport.Height / 2 - bossTexture.Height / 2);
+
             bossAnimation.Initialize(bossTexture,
             position,
           bossTexture.Width, bossTexture.Height, 1, 30,

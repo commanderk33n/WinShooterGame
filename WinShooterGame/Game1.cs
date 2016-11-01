@@ -99,7 +99,6 @@ namespace WinShooterGame
 
             /* Draw the active screen */
             SCREEN_MANAGER.Draw(gameTime);
-
             base.Draw(gameTime);
         }
     }

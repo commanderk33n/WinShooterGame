@@ -37,13 +37,13 @@ namespace WinShooterGame.GameObjects
             Active = true;
             Health = 200;
             Damage = 20;
-            bossMoveSpeed = 1;
+            bossMoveSpeed = 3;
             Value = 500;
         }
 
         public void Update(GameTime gameTime)
         {
-            // TODO: bossmovement
+            Position.Y -= bossMoveSpeed;
             BossAnimation.Position = Position;
             BossAnimation.Update(gameTime);
             if (Health <= 0)
@@ -54,10 +54,7 @@ namespace WinShooterGame.GameObjects
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (Active)
-            {
-                BossAnimation.Draw(spriteBatch);
-            }
+            BossAnimation.Draw(spriteBatch);
         }
     }
 }
