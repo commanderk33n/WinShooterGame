@@ -24,7 +24,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-    <PackageCertificateThumbprint>6B85EAD10F8B4FA2F15FEA7AE8093736B5212CA5</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>74F208FAB4502F06E49A79C0F116E955099B489D</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -124,6 +124,7 @@
     <Compile Include="ScreenManager\ScreenManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Graphics\Score.spritefont" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

@@ -21,8 +21,8 @@ namespace WinShooterGame
 
         public override bool Init()
         {
-            texture = _content.Load<Texture2D>("graphics\\mainMenu");
-            menuMusic = _content.Load<Song>("sounds\\menuMusic");
+            texture = _content.Load<Texture2D>("Graphics\\mainMenu");
+            menuMusic = _content.Load<Song>("Sounds\\menuMusic");
             font = _content.Load<SpriteFont>("Graphics\\Score");
             destinationRectagle =
               new Rectangle(0, 0,

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace WinShooterGame.GameObjects
 {
@@ -18,9 +17,6 @@ namespace WinShooterGame.GameObjects
 
         // the amount of the score enemy is worth.
         public int Value;
-
-        public TimeSpan bossMovementTime;
-        private TimeSpan previousTime;
 
         public int Width
         {
@@ -41,23 +37,13 @@ namespace WinShooterGame.GameObjects
             Active = true;
             Health = 200;
             Damage = 20;
-            bossMoveSpeed = 0;
+            bossMoveSpeed = 1;
             Value = 500;
-            bossMovementTime = TimeSpan.FromSeconds(1.5f);
         }
 
         public void Update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime - previousTime > bossMovementTime)
-            {
-                previousTime = gameTime.TotalGameTime;
-                Position.Y += bossMoveSpeed;
-            }
-            else
-            {
-                Position.Y -= bossMoveSpeed;
-            }
-
+            // TODO: bossmovement
             BossAnimation.Position = Position;
             BossAnimation.Update(gameTime);
             if (Health <= 0)
@@ -68,7 +54,10 @@ namespace WinShooterGame.GameObjects
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            BossAnimation.Draw(spriteBatch);
+            if (Active)
+            {
+                BossAnimation.Draw(spriteBatch);
+            }
         }
     }
 }

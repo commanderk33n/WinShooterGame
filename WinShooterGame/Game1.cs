@@ -15,11 +15,6 @@ namespace WinShooterGame
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        //Screen State variables to indicate what is the current screen
-        private bool mIsGameRunning;
-
-        private bool mIsTitleScreenShown;
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -90,7 +85,6 @@ namespace WinShooterGame
             {
                 SCREEN_MANAGER.goto_screen("gameMenu");
             }
-
             SCREEN_MANAGER.Update(gameTime);
             base.Update(gameTime);
         }

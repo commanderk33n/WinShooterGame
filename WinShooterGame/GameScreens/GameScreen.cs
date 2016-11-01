@@ -199,11 +199,8 @@ namespace WinShooterGame
 
             // Draw the Player
             _player.Draw(_spriteBatch);
-            //  _spriteBatch.Draw(bossTexture, _rectBackground, Color.Blue);
-            if (_boss.Active)
-            {
-                _spriteBatch.Draw(bossTexture, _rectBackground, Color.Beige);
-            }
+
+            _boss.Draw(_spriteBatch);
 
             // Draw the lasers.
             foreach (var l in laserBeams)
@@ -231,7 +228,6 @@ namespace WinShooterGame
 
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
             // User inputs.
             // Save the previous state of the keyboard and game pad so we can determine single key/button presses
             _prevGamePadState = _currentGamePadState;
@@ -252,11 +248,7 @@ namespace WinShooterGame
             // update the enemies
             UpdateEnemies(gameTime);
 
-            // update collisons
-            UpdateCollision();
-
-            UpdateExplosions(gameTime);
-            if (score >= 100 & !_boss.Active)
+            if (score >= 100 && !_boss.Active)
             {
                 AddBoss();
             }
@@ -265,6 +257,11 @@ namespace WinShooterGame
                 UpdateBoss(gameTime);
                 // TODO: if boss.inactive exit -> highscore
             }
+
+            // update collisons
+            UpdateCollision();
+
+            UpdateExplosions(gameTime);
 
             // Check if ESC is pressed or Player is inactive and go to GameOver screen
             if (!_player.Active || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -359,27 +356,21 @@ namespace WinShooterGame
         protected void AddBoss()
         {
             Animation bossAnimation = new Animation();
-
+            var position = new Vector2(_device.Viewport.Width - bossTexture.Width * 2, _device.Viewport.Height / 2);
             bossAnimation.Initialize(bossTexture,
-              Vector2.Zero,
-               47,
-               61,
-               8,
-               30,
-               Color.White,
-               1f,
-               true);
-            Vector2 position = new Vector2(200, 100);
+            position,
+          bossTexture.Width, bossTexture.Height, 1, 30,
+             Color.White,
+             1,
+             true);
+
             // init the boss
             _boss.Initialize(bossAnimation, position);
         }
 
         protected void UpdateBoss(GameTime gameTime)
         {
-            if (_boss.Active)
-            {
-                _boss.Update(gameTime);
-            }
+            _boss.Update(gameTime);
         }
 
         protected void FireLaser(GameTime gameTime)
