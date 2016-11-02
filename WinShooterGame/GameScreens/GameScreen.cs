@@ -361,7 +361,7 @@ namespace WinShooterGame
         {
             Animation bossAnimation = new Animation();
 
-            var position = new Vector2(_device.Viewport.Width - bossTexture.Width, _device.Viewport.Height / 2 - bossTexture.Height / 2);
+            var position = new Vector2(_device.Viewport.Width - bossTexture.Width, 270f);
 
             bossAnimation.Initialize(bossTexture,
             position,
@@ -488,6 +488,7 @@ namespace WinShooterGame
             Rectangle playerRectangle;
             Rectangle enemyRectangle;
             Rectangle laserRectangle;
+            Rectangle bossRectangle;
 
             // create the rectangle for the player
             playerRectangle = new Rectangle(
@@ -496,56 +497,92 @@ namespace WinShooterGame
                 _player.Width,
                 _player.Height);
 
-            // detect collisions between the player and all enemies.
-            for (var i = 0; i < enemies.Count; i++)
+            if (_boss.Active)
             {
-                enemyRectangle = new Rectangle(
-                   (int)enemies[i].Position.X,
-                   (int)enemies[i].Position.Y,
-                   enemies[i].Width,
-                   enemies[i].Height);
-
-                // determine if the player and the enemy intersect.
-                if (playerRectangle.Intersects(enemyRectangle))
+                bossRectangle = new Rectangle(
+                    (int)_boss.Position.X,
+                    (int)_boss.Position.Y,
+                    _boss.Width,
+                    _boss.Health);
+                if (playerRectangle.Intersects(bossRectangle))
                 {
-                    // kill off the enemy
-                    enemies[i].Health = 0;
-
-                    // Show the explosion where the enemy was...
-                    AddExplosion(enemies[i].Position);
-
-                    // deal damge to the player
-                    _player.Health -= enemies[i].Damage;
-                    // if the player has no health destroy it.
-                    if (_player.Health <= 0)
+                    AddExplosion(_player.Position);
+                    _player.Health = 0;
+                }
+                for (var j = 0; j < laserBeams.Count; j++)
+                {
+                    laserRectangle = new Rectangle(
+                       (int)laserBeams[j].Position.X,
+                       (int)laserBeams[j].Position.Y,
+                       laserBeams[j].Width,
+                       laserBeams[j].Height);
+                    if (laserRectangle.Intersects(bossRectangle))
                     {
-                        //AddExplosion(_player.Position);
-                        _player.Active = false;
-                        // _player.Position = Vector2.Zero;
+                        AddExplosion(_boss.Position);
+                        _boss.Health -= 5;
+                    }
+                    if (_boss.Health <= 0)
+                    {
+                        _boss.Active = false;
+                        score += _boss.Value;
+                        SCREEN_MANAGER.goto_screen("gameOver");
                     }
                 }
+            }
 
-                for (var l = 0; l < laserBeams.Count; l++)
+            if (!_boss.Active)
+            {
+                // detect collisions between the player and all enemies.
+                for (var i = 0; i < enemies.Count; i++)
                 {
-                    // create a rectangle for this laserbeam
-                    laserRectangle = new Rectangle(
-                        (int)laserBeams[l].Position.X,
-                        (int)laserBeams[l].Position.Y,
-                        laserBeams[l].Width,
-                        laserBeams[l].Height);
+                    enemyRectangle = new Rectangle(
+                       (int)enemies[i].Position.X,
+                       (int)enemies[i].Position.Y,
+                       enemies[i].Width,
+                       enemies[i].Height);
 
-                    // test the bounds of the laser and enemy
-                    if (laserRectangle.Intersects(enemyRectangle))
+                    // determine if the player and the enemy intersect.
+                    if (playerRectangle.Intersects(enemyRectangle))
                     {
-                        // Show the explosion where the enemy was...
-                        AddExplosion(enemies[i].Position);
-
                         // kill off the enemy
                         enemies[i].Health = 0;
 
-                        // kill off the laserbeam
-                        laserBeams[l].Active = false;
-                        score++;
+                        // Show the explosion where the enemy was...
+                        AddExplosion(enemies[i].Position);
+
+                        // deal damge to the player
+                        _player.Health -= enemies[i].Damage;
+                        // if the player has no health destroy it.
+                        if (_player.Health <= 0)
+                        {
+                            //AddExplosion(_player.Position);
+                            _player.Active = false;
+                            // _player.Position = Vector2.Zero;
+                        }
+                    }
+
+                    for (var l = 0; l < laserBeams.Count; l++)
+                    {
+                        // create a rectangle for this laserbeam
+                        laserRectangle = new Rectangle(
+                            (int)laserBeams[l].Position.X,
+                            (int)laserBeams[l].Position.Y,
+                            laserBeams[l].Width,
+                            laserBeams[l].Height);
+
+                        // test the bounds of the laser and enemy
+                        if (laserRectangle.Intersects(enemyRectangle))
+                        {
+                            // Show the explosion where the enemy was...
+                            AddExplosion(enemies[i].Position);
+
+                            // kill off the enemy
+                            enemies[i].Health = 0;
+
+                            // kill off the laserbeam
+                            laserBeams[l].Active = false;
+                            score++;
+                        }
                     }
                 }
             }

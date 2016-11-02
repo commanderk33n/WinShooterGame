@@ -18,6 +18,11 @@ namespace WinShooterGame.GameObjects
         // the amount of the score enemy is worth.
         public int Value;
 
+        public bool turnAround;
+
+        public int distance;
+        public float bossMoveSpeed;
+
         public int Width
         {
             get { return BossAnimation.FrameWidth; }
@@ -28,22 +33,42 @@ namespace WinShooterGame.GameObjects
             get { return BossAnimation.FrameHeight; }
         }
 
-        public float bossMoveSpeed;
-
         public void Initialize(Animation animation, Vector2 position)
         {
             BossAnimation = animation;
             Position = position;
             Active = true;
-            Health = 200;
+            Health = 350;
             Damage = 20;
-            bossMoveSpeed = 3;
+            bossMoveSpeed = 2;
             Value = 500;
+            turnAround = true;
+            distance = 0;
         }
 
         public void Update(GameTime gameTime)
         {
-            Position.Y -= bossMoveSpeed;
+            if (turnAround)
+            {
+                Position.Y -= bossMoveSpeed;
+                distance++;
+                if (distance > 120)
+                {
+                    turnAround = false;
+                    distance = 0;
+                }
+            }
+            else
+            {
+                Position.Y += bossMoveSpeed;
+                distance++;
+                if (distance > 120)
+                {
+                    turnAround = true;
+                    distance = 0;
+                }
+            }
+
             BossAnimation.Position = Position;
             BossAnimation.Update(gameTime);
             if (Health <= 0)
